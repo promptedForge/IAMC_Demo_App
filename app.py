@@ -1,3 +1,5 @@
+import time
+
 import streamlit as st
 
 from data_pipeline import (
@@ -47,16 +49,19 @@ def advance(to_step: int, payload_key: str | None = None, payload=None) -> None:
     st.session_state.processing = False
     st.session_state.step += 1
 
+    
 # ----------------- Step 1: Collect Signals ----------------- #
 if st.session_state.step == 1:
     st.header("Step 1 – Collect Signals (Radar Feed)")
-    with st.status("Loading radar feed...", expanded=True) as status:
-        status.write("Reading radar_feed.json")
+    with st.spinner("Analyzing radar feed..."):
+        time.sleep(0.5)
         stories = get_demo_radar(st.session_state.voice)
-        status.update(label="Radar feed loaded", state="complete")
 
-    for story in stories:
-        with st.expander(story["title"]):
+    progress = st.progress(0)
+    feed_container = st.container()
+    for i, story in enumerate(stories):
+        time.sleep(0.1)
+        with feed_container.expander(story["title"]):
             st.markdown(
                 f"**Source:** {story['source']}  \n"
                 f"**Date:** {story['date']}  \n"
@@ -64,6 +69,7 @@ if st.session_state.step == 1:
                 f"**Confidence:** {story['confidence']}"
             )
             st.write(story["summary"])
+        progress.progress(int((i + 1) / len(stories) * 100))
 
     if st.button("Approve & Continue", disabled=st.session_state.processing):
         advance(to_step=1, payload_key="radar_feed", payload=stories)
@@ -73,14 +79,21 @@ if st.session_state.step == 1:
 elif st.session_state.step == 2:
     st.header("Step 2 – Daily Radar")
     placeholder = st.empty()
-    with st.status("Loading daily radar...", expanded=True) as status:
-        status.write("Reading daily_radar.md")
+    with st.spinner("Synthesizing daily radar..."):
+        time.sleep(0.5)
         radar_md = categorize(
             st.session_state.demo_data.get("radar_feed", []),
             st.session_state.voice,
         )
-        status.update(label="Daily radar loaded", state="complete")
-    placeholder.markdown(radar_md)
+
+    progress = st.progress(0)
+    lines = radar_md.splitlines()
+    partial = ""
+    for i, line in enumerate(lines):
+        partial += line + "\n"
+        placeholder.markdown(partial)
+        progress.progress(int((i + 1) / len(lines) * 100))
+        time.sleep(0.05)
 
     if st.button("Approve & Continue", disabled=st.session_state.processing):
         advance(to_step=2, payload_key="daily_radar", payload=radar_md)
@@ -90,13 +103,20 @@ elif st.session_state.step == 2:
 elif st.session_state.step == 3:
     st.header("Step 3 – Master Brief")
     placeholder = st.empty()
-    with st.status("Loading master brief...", expanded=True) as status:
-        status.write("Reading master_brief.md")
+    with st.spinner("Assembling master brief..."):
+        time.sleep(0.5)
         brief = analyze(
             st.session_state.demo_data.get("daily_radar", ""), st.session_state.voice
         )
-        status.update(label="Master brief loaded", state="complete")
-    placeholder.markdown(brief)
+
+    progress = st.progress(0)
+    lines = brief.splitlines()
+    partial = ""
+    for i, line in enumerate(lines):
+        partial += line + "\n"
+        placeholder.markdown(partial)
+        progress.progress(int((i + 1) / len(lines) * 100))
+        time.sleep(0.05)
 
     if st.button("Approve & Continue", disabled=st.session_state.processing):
         advance(to_step=3, payload_key="master_brief", payload=brief)
@@ -105,34 +125,33 @@ elif st.session_state.step == 3:
 # ----------------- Step 4: Content Drafts ----------------- #
 elif st.session_state.step == 4:
     st.header("Step 4 – Content Drafts")
-    with st.status("Loading content drafts...", expanded=True) as status:
+    with st.spinner("Generating content drafts..."):
+        time.sleep(0.5)
         drafts = generate_content(
             st.session_state.demo_data.get("master_brief", ""), st.session_state.voice
         )
-        status.update(label="Content drafts loaded", state="complete")
 
-    # Press Release
+    def gradual_text_area(label: str, text: str, height: int) -> None:
+        area = st.empty()
+        progress = st.progress(0)
+        lines = text.splitlines()
+        content = ""
+        for i, line in enumerate(lines):
+            content += line + "\n"
+            area.text_area(label, content, height=height, disabled=True)
+            progress.progress(int((i + 1) / len(lines) * 100))
+            time.sleep(0.05)
+
     st.subheader("Press Release (Draft)")
-    st.text_area(
-        "Press Release", drafts["press_release"], height=250, disabled=True
-    )
+    gradual_text_area("Press Release", drafts["press_release"], height=250)
 
-    # Social Posts
     st.subheader("Social Media Posts (Drafts)")
-    st.text_area(
-        "Social Posts", drafts["social_posts"], height=200, disabled=True
-    )
+    gradual_text_area("Social Posts", drafts["social_posts"], height=200)
 
-    # Newsletter
     st.subheader("Newsletter Section (Draft)")
-    st.text_area(
-        "Newsletter", drafts["newsletter"], height=300, disabled=True
-    )
+    gradual_text_area("Newsletter", drafts["newsletter"], height=300)
 
-    # LinkedIn Op-ed
     st.subheader("LinkedIn Op-ed (Draft)")
-    st.text_area(
-        "LinkedIn Op-ed", drafts["linkedin_oped"], height=300, disabled=True
-    )
+    gradual_text_area("LinkedIn Op-ed", drafts["linkedin_oped"], height=300)
 
     st.success("✅ Pipeline complete – All outputs loaded.")
