@@ -43,10 +43,9 @@ def advance(to_step: int, payload_key: str | None = None, payload=None) -> None:
     if payload_key is not None:
         st.session_state.demo_data[payload_key] = payload
 
-    # Update state and trigger rerun
+    # Update state; Streamlit reruns when session state changes
     st.session_state.processing = False
     st.session_state.step += 1
-    st.rerun()
 
 # ----------------- Step 1: Collect Signals ----------------- #
 if st.session_state.step == 1:
@@ -66,12 +65,9 @@ if st.session_state.step == 1:
             )
             st.write(story["summary"])
 
-    st.button(
-        "Approve & Continue",
-        on_click=advance,
-        kwargs={"to_step": 1, "payload_key": "radar_feed", "payload": stories},
-        disabled=st.session_state.processing,
-    )
+    if st.button("Approve & Continue", disabled=st.session_state.processing):
+        advance(to_step=1, payload_key="radar_feed", payload=stories)
+        st.rerun()
 
 # ----------------- Step 2: Daily Radar ----------------- #
 elif st.session_state.step == 2:
@@ -86,12 +82,9 @@ elif st.session_state.step == 2:
         status.update(label="Daily radar loaded", state="complete")
     placeholder.markdown(radar_md)
 
-    st.button(
-        "Approve & Continue",
-        on_click=advance,
-        kwargs={"to_step": 2, "payload_key": "daily_radar", "payload": radar_md},
-        disabled=st.session_state.processing,
-    )
+    if st.button("Approve & Continue", disabled=st.session_state.processing):
+        advance(to_step=2, payload_key="daily_radar", payload=radar_md)
+        st.rerun()
 
 # ----------------- Step 3: Master Brief ----------------- #
 elif st.session_state.step == 3:
@@ -105,12 +98,9 @@ elif st.session_state.step == 3:
         status.update(label="Master brief loaded", state="complete")
     placeholder.markdown(brief)
 
-    st.button(
-        "Approve & Continue",
-        on_click=advance,
-        kwargs={"to_step": 3, "payload_key": "master_brief", "payload": brief},
-        disabled=st.session_state.processing,
-    )
+    if st.button("Approve & Continue", disabled=st.session_state.processing):
+        advance(to_step=3, payload_key="master_brief", payload=brief)
+        st.rerun()
 
 # ----------------- Step 4: Content Drafts ----------------- #
 elif st.session_state.step == 4:
