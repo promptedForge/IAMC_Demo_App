@@ -125,17 +125,6 @@ elif st.session_state.step == 3:
 # ----------------- Step 4: Content Drafts ----------------- #
 elif st.session_state.step == 4:
     st.header("Step 4 – Content Drafts")
-    st.markdown(
-        """
-        <style>
-        textarea[disabled] {
-            color: black !important;
-            background-color: white !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
     with st.spinner("Generating content drafts..."):
         time.sleep(0.5)
         drafts = generate_content(
@@ -149,7 +138,7 @@ elif st.session_state.step == 4:
         content = ""
         for i, line in enumerate(lines):
             content += line + "\n"
-            area.text_area(label, content, height=height, disabled=True)
+            area.text_area(label, content, height=height)
             progress.progress(int((i + 1) / len(lines) * 100))
             time.sleep(0.05)
 
