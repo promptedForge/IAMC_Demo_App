@@ -7,9 +7,33 @@ st.title("IAMC Advocacy Intelligence Demo")
 st.write("Pipeline: Signals → Daily Radar → Master Brief → Content Drafts")
 st.write("Each step requires human approval before continuing.")
 
-# Session state to track progress
+# Session state to track progress and processing flag
 if "step" not in st.session_state:
     st.session_state.step = 1
+if "processing" not in st.session_state:
+    st.session_state.processing = False
+if "demo_data" not in st.session_state:
+    st.session_state.demo_data = {}
+
+
+def advance(to_step: int, payload_key: str | None = None, payload=None) -> None:
+    """Advance to the next step if the current step matches ``to_step``.
+
+    Any provided ``payload`` is stored under ``payload_key`` in
+    ``st.session_state.demo_data`` before progressing.
+    """
+    if st.session_state.step != to_step:
+        return
+
+    st.session_state.processing = True
+
+    if payload_key is not None:
+        st.session_state.demo_data[payload_key] = payload
+
+    # Update state and trigger rerun
+    st.session_state.processing = False
+    st.session_state.step += 1
+    st.rerun()
 
 # ----------------- Step 1: Collect Signals ----------------- #
 if st.session_state.step == 1:
@@ -18,9 +42,12 @@ if st.session_state.step == 1:
         stories = json.load(f)
     st.json(stories)
 
-    if st.button("Approve & Continue"):
-        st.session_state.step = 2
-        st.experimental_rerun()
+    st.button(
+        "Approve & Continue",
+        on_click=advance,
+        kwargs={"to_step": 1, "payload_key": "radar_feed", "payload": stories},
+        disabled=st.session_state.processing,
+    )
 
 # ----------------- Step 2: Daily Radar ----------------- #
 elif st.session_state.step == 2:
@@ -29,9 +56,12 @@ elif st.session_state.step == 2:
         radar_md = f.read()
     st.markdown(radar_md)
 
-    if st.button("Approve & Continue"):
-        st.session_state.step = 3
-        st.experimental_rerun()
+    st.button(
+        "Approve & Continue",
+        on_click=advance,
+        kwargs={"to_step": 2, "payload_key": "daily_radar", "payload": radar_md},
+        disabled=st.session_state.processing,
+    )
 
 # ----------------- Step 3: Master Brief ----------------- #
 elif st.session_state.step == 3:
@@ -40,9 +70,12 @@ elif st.session_state.step == 3:
         brief = f.read()
     st.markdown(brief)
 
-    if st.button("Approve & Continue"):
-        st.session_state.step = 4
-        st.experimental_rerun()
+    st.button(
+        "Approve & Continue",
+        on_click=advance,
+        kwargs={"to_step": 3, "payload_key": "master_brief", "payload": brief},
+        disabled=st.session_state.processing,
+    )
 
 # ----------------- Step 4: Content Drafts ----------------- #
 elif st.session_state.step == 4:
