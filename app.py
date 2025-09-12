@@ -9,6 +9,13 @@ from data_pipeline import (
 
 st.set_page_config(page_title="IAMC Advocacy Intelligence Demo", layout="centered")
 
+voice = st.sidebar.radio(
+    "Voice",
+    ["Advocacy", "Analyst"],
+    index=0 if st.session_state.get("voice", "Advocacy") == "Advocacy" else 1,
+)
+st.session_state.voice = voice
+
 st.title("IAMC Advocacy Intelligence Demo")
 st.write("Pipeline: Signals → Daily Radar → Master Brief → Content Drafts")
 st.write("Each step requires human approval before continuing.")
@@ -47,7 +54,7 @@ if st.session_state.step == 1:
     placeholder = st.empty()
     with st.status("Loading radar feed...", expanded=True) as status:
         status.write("Reading radar_feed.json")
-        stories = get_demo_radar()
+        stories = get_demo_radar(st.session_state.voice)
         status.update(label="Radar feed loaded", state="complete")
     placeholder.json(stories)
 
@@ -64,7 +71,10 @@ elif st.session_state.step == 2:
     placeholder = st.empty()
     with st.status("Loading daily radar...", expanded=True) as status:
         status.write("Reading daily_radar.md")
-        radar_md = categorize(st.session_state.demo_data.get("radar_feed", []))
+        radar_md = categorize(
+            st.session_state.demo_data.get("radar_feed", []),
+            st.session_state.voice,
+        )
         status.update(label="Daily radar loaded", state="complete")
     placeholder.markdown(radar_md)
 
@@ -81,7 +91,9 @@ elif st.session_state.step == 3:
     placeholder = st.empty()
     with st.status("Loading master brief...", expanded=True) as status:
         status.write("Reading master_brief.md")
-        brief = analyze(st.session_state.demo_data.get("daily_radar", ""))
+        brief = analyze(
+            st.session_state.demo_data.get("daily_radar", ""), st.session_state.voice
+        )
         status.update(label="Master brief loaded", state="complete")
     placeholder.markdown(brief)
 
@@ -96,7 +108,9 @@ elif st.session_state.step == 3:
 elif st.session_state.step == 4:
     st.header("Step 4 – Content Drafts")
     with st.status("Loading content drafts...", expanded=True) as status:
-        drafts = generate_content(st.session_state.demo_data.get("master_brief", ""))
+        drafts = generate_content(
+            st.session_state.demo_data.get("master_brief", ""), st.session_state.voice
+        )
         status.update(label="Content drafts loaded", state="complete")
 
     # Press Release
