@@ -1,5 +1,11 @@
 import streamlit as st
-import json
+
+from data_pipeline import (
+    analyze,
+    categorize,
+    generate_content,
+    get_demo_radar,
+)
 
 st.set_page_config(page_title="IAMC Advocacy Intelligence Demo", layout="centered")
 
@@ -14,42 +20,6 @@ if "processing" not in st.session_state:
     st.session_state.processing = False
 if "demo_data" not in st.session_state:
     st.session_state.demo_data = {}
-
-
-def get_demo_radar() -> dict:
-    """Return the demo radar feed."""
-    with open("1_Radar_Feed/radar_feed.json") as f:
-        return json.load(f)
-
-
-def get_daily_radar() -> str:
-    """Return the demo daily radar markdown."""
-    with open("2_Daily_Radar/daily_radar.md") as f:
-        return f.read()
-
-
-def get_master_brief() -> str:
-    """Return the demo master brief markdown."""
-    with open("3_Master_Brief/master_brief.md") as f:
-        return f.read()
-
-
-def get_content_drafts() -> dict:
-    """Return all content drafts used in the demo."""
-    with open("4_Content_Drafts/press_release_draft.md") as f:
-        press_release = f.read()
-    with open("4_Content_Drafts/social_post.txt") as f:
-        social_posts = f.read()
-    with open("4_Content_Drafts/newsletter_snippet.md") as f:
-        newsletter = f.read()
-    with open("4_Content_Drafts/linkedin_oped_draft.md") as f:
-        linkedin_oped = f.read()
-    return {
-        "press_release": press_release,
-        "social_posts": social_posts,
-        "newsletter": newsletter,
-        "linkedin_oped": linkedin_oped,
-    }
 
 
 def advance(to_step: int, payload_key: str | None = None, payload=None) -> None:
@@ -94,7 +64,7 @@ elif st.session_state.step == 2:
     placeholder = st.empty()
     with st.status("Loading daily radar...", expanded=True) as status:
         status.write("Reading daily_radar.md")
-        radar_md = get_daily_radar()
+        radar_md = categorize(st.session_state.demo_data.get("radar_feed", []))
         status.update(label="Daily radar loaded", state="complete")
     placeholder.markdown(radar_md)
 
@@ -111,7 +81,7 @@ elif st.session_state.step == 3:
     placeholder = st.empty()
     with st.status("Loading master brief...", expanded=True) as status:
         status.write("Reading master_brief.md")
-        brief = get_master_brief()
+        brief = analyze(st.session_state.demo_data.get("daily_radar", ""))
         status.update(label="Master brief loaded", state="complete")
     placeholder.markdown(brief)
 
@@ -126,23 +96,31 @@ elif st.session_state.step == 3:
 elif st.session_state.step == 4:
     st.header("Step 4 – Content Drafts")
     with st.status("Loading content drafts...", expanded=True) as status:
-        drafts = get_content_drafts()
+        drafts = generate_content(st.session_state.demo_data.get("master_brief", ""))
         status.update(label="Content drafts loaded", state="complete")
 
     # Press Release
     st.subheader("Press Release (Draft)")
-    st.text_area("Press Release", drafts["press_release"], height=250)
+    st.text_area(
+        "Press Release", drafts["press_release"], height=250, disabled=True
+    )
 
     # Social Posts
     st.subheader("Social Media Posts (Drafts)")
-    st.text_area("Social Posts", drafts["social_posts"], height=200)
+    st.text_area(
+        "Social Posts", drafts["social_posts"], height=200, disabled=True
+    )
 
     # Newsletter
     st.subheader("Newsletter Section (Draft)")
-    st.text_area("Newsletter", drafts["newsletter"], height=300)
+    st.text_area(
+        "Newsletter", drafts["newsletter"], height=300, disabled=True
+    )
 
     # LinkedIn Op-ed
     st.subheader("LinkedIn Op-ed (Draft)")
-    st.text_area("LinkedIn Op-ed", drafts["linkedin_oped"], height=300)
+    st.text_area(
+        "LinkedIn Op-ed", drafts["linkedin_oped"], height=300, disabled=True
+    )
 
     st.success("✅ Pipeline complete – All outputs loaded.")
