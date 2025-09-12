@@ -3,9 +3,10 @@ from typing import TypedDict
 class Article(TypedDict):
     title: str
     source: str
-    date: str
+    date: str  # ISO 8601 formatted date
     summary: str
     url: str
+    confidence: float
 
 
 class CategorizedStory(TypedDict):

@@ -51,12 +51,20 @@ def advance(to_step: int, payload_key: str | None = None, payload=None) -> None:
 # ----------------- Step 1: Collect Signals ----------------- #
 if st.session_state.step == 1:
     st.header("Step 1 – Collect Signals (Radar Feed)")
-    placeholder = st.empty()
     with st.status("Loading radar feed...", expanded=True) as status:
         status.write("Reading radar_feed.json")
         stories = get_demo_radar(st.session_state.voice)
         status.update(label="Radar feed loaded", state="complete")
-    placeholder.json(stories)
+
+    for story in stories:
+        with st.expander(story["title"]):
+            st.markdown(
+                f"**Source:** {story['source']}  \n"
+                f"**Date:** {story['date']}  \n"
+                f"**URL:** {story['url']}  \n"
+                f"**Confidence:** {story['confidence']}"
+            )
+            st.write(story["summary"])
 
     st.button(
         "Approve & Continue",
