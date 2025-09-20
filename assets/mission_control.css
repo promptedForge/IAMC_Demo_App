@@ -8,6 +8,8 @@
     --deep-navy: #0A0E27;
     --mid-navy: #111530;
     --light-navy: #1A1F3A;
+    --glass-bg: rgba(15, 20, 40, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.08);
     --text-primary: #E8E8E8;
     --text-secondary: #B8B8C8;
     --success-green: #00FF88;
@@ -15,19 +17,43 @@
     --error-red: #FF4444;
     --border-subtle: rgba(0, 212, 255, 0.2);
     --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.5);
+    --depth-shadow-1: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --depth-shadow-2: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --depth-shadow-3: 0 16px 48px rgba(0, 0, 0, 0.5);
+    --lift-transform: translateY(-4px) scale(1.01);
 }
 
 /* Main App Container */
 .stApp {
     background: linear-gradient(180deg, var(--deep-navy) 0%, var(--mid-navy) 100%);
     color: var(--text-primary);
+    position: relative;
 }
 
-/* Header Styling */
+/* Glass Layer Effect */
+.stApp::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at top, rgba(0, 212, 255, 0.05), transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Header Styling - Glass Morphism */
 .stApp > header {
-    background: rgba(10, 14, 39, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border-subtle);
+    background: linear-gradient(135deg, 
+        rgba(10, 14, 39, 0.7) 0%,
+        rgba(17, 21, 48, 0.6) 100%);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--depth-shadow-1);
+    position: relative;
+    z-index: 10;
 }
 
 /* Title and Headers */
@@ -43,10 +69,17 @@ h1 {
     text-shadow: var(--glow-cyan);
 }
 
-/* Sidebar Styling */
+/* Sidebar Styling - Layered Glass */
 section[data-testid="stSidebar"] {
-    background: var(--deep-navy);
-    border-right: 1px solid var(--border-subtle);
+    background: linear-gradient(180deg,
+        rgba(10, 14, 39, 0.95) 0%,
+        rgba(26, 31, 58, 0.85) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-right: 1px solid var(--glass-border);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 20;
 }
 
 section[data-testid="stSidebar"] .stRadio label {
@@ -57,23 +90,55 @@ section[data-testid="stSidebar"] .stRadio label {
     letter-spacing: 0.1em;
 }
 
-/* Button Styling */
+/* Button Styling - 3D Glass Effect */
 button[kind="primary"], button[kind="secondary"] {
-    background: linear-gradient(135deg, var(--primary-cyan), var(--secondary-cyan));
-    border: 1px solid var(--primary-cyan);
+    background: linear-gradient(135deg, 
+        rgba(0, 212, 255, 0.9) 0%, 
+        rgba(0, 168, 204, 0.8) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: var(--deep-navy);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    box-shadow: 
+        0 4px 12px rgba(0, 212, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 button[kind="primary"]:hover, button[kind="secondary"]:hover {
-    background: var(--primary-cyan);
-    box-shadow: var(--glow-cyan);
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, 
+        rgba(0, 212, 255, 1) 0%, 
+        rgba(0, 168, 204, 0.9) 100%);
+    box-shadow: 
+        0 8px 24px rgba(0, 212, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 0 40px rgba(0, 212, 255, 0.3);
+    transform: var(--lift-transform);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Button Depth Effect */
+button[kind="primary"]::before, button[kind="secondary"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0.2) 0%, 
+        transparent 50%, 
+        rgba(0, 0, 0, 0.1) 100%);
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+button[kind="primary"]:hover::before, button[kind="secondary"]:hover::before {
+    opacity: 0.8;
 }
 
 button[kind="primary"]:disabled {
@@ -90,43 +155,89 @@ button[kind="primary"]:disabled {
     box-shadow: var(--glow-cyan);
 }
 
-/* Expander */
+/* Expander - Glass Card Effect */
 .streamlit-expanderHeader {
-    background: var(--light-navy);
-    border: 1px solid var(--border-subtle);
+    background: linear-gradient(135deg,
+        rgba(26, 31, 58, 0.6) 0%,
+        rgba(42, 51, 78, 0.4) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
     color: var(--text-primary);
     font-family: monospace;
     font-size: 0.95em;
-    border-radius: 4px;
+    border-radius: 8px;
+    box-shadow: var(--depth-shadow-1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .streamlit-expanderHeader:hover {
-    border-color: var(--primary-cyan);
-    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    background: linear-gradient(135deg,
+        rgba(26, 31, 58, 0.8) 0%,
+        rgba(42, 51, 78, 0.6) 100%);
+    border-color: rgba(0, 212, 255, 0.4);
+    box-shadow: 
+        0 8px 24px rgba(0, 212, 255, 0.2),
+        inset 0 0 20px rgba(0, 212, 255, 0.05);
+    transform: translateY(-2px);
 }
 
-/* Container Styling */
+/* Container Styling - Layered Glass */
 div[data-testid="stExpander"] > div {
-    background: rgba(26, 31, 58, 0.5);
-    border: 1px solid var(--border-subtle);
-    border-radius: 4px;
-    padding: 1rem;
+    background: linear-gradient(180deg,
+        rgba(26, 31, 58, 0.4) 0%,
+        rgba(17, 21, 48, 0.3) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Text Areas */
+/* All element containers - hover lift effect */
+.element-container {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.element-container:hover {
+    transform: translateY(-2px);
+}
+
+/* Text Areas - Floating Glass Input */
 .stTextArea textarea {
-    background: var(--light-navy);
-    border: 1px solid var(--border-subtle);
+    background: linear-gradient(135deg,
+        rgba(26, 31, 58, 0.8) 0%,
+        rgba(42, 51, 78, 0.6) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
     color: var(--text-primary);
     font-family: 'SF Mono', monospace;
     font-size: 0.9em;
     line-height: 1.6;
+    box-shadow: var(--depth-shadow-1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stTextArea textarea:hover {
+    background: linear-gradient(135deg,
+        rgba(26, 31, 58, 0.9) 0%,
+        rgba(42, 51, 78, 0.7) 100%);
+    box-shadow: var(--depth-shadow-2);
+    transform: translateY(-1px);
 }
 
 .stTextArea textarea:focus {
     border-color: var(--primary-cyan);
-    box-shadow: 0 0 0 1px var(--primary-cyan);
+    box-shadow: 
+        0 0 0 2px rgba(0, 212, 255, 0.2),
+        var(--depth-shadow-2),
+        inset 0 0 20px rgba(0, 212, 255, 0.05);
     outline: none;
+    transform: translateY(-2px);
 }
 
 /* Markdown Content */
@@ -176,6 +287,103 @@ div[data-testid="stExpander"] > div {
     100% {
         box-shadow: 0 0 0 0 rgba(0, 212, 255, 0);
     }
+}
+
+/* Glass shine animation */
+@keyframes glass-shine {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* Enhanced hover effects for text areas in Step 4 */
+.stTextArea {
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stTextArea:hover {
+    transform: translateY(-3px);
+}
+
+/* Content draft containers hover enhancement */
+div[data-testid="stVerticalBlock"] > div:has(.stTextArea) {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 12px;
+    position: relative;
+}
+
+div[data-testid="stVerticalBlock"] > div:has(.stTextArea):hover {
+    transform: translateY(-2px);
+}
+
+/* Enhanced glass effect for all containers */
+.element-container:has(h1), .element-container:has(h2), 
+.element-container:has(h3), .element-container:has(h4) {
+    position: relative;
+    z-index: 1;
+}
+
+/* Floating animation for interactive elements */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Apply subtle floating to key elements */
+.stProgress {
+    animation: float 4s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+/* Hover lift for all interactive elements */
+.stButton, .stSelectbox, .stMultiSelect, .stSlider, .stCheckbox, .stRadio {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stButton:hover, .stSelectbox:hover, .stMultiSelect:hover, 
+.stSlider:hover, .stCheckbox:hover, .stRadio:hover {
+    transform: translateY(-2px);
+}
+
+/* Glass panels for metric cards and info boxes */
+[data-testid="metric-container"] {
+    background: linear-gradient(135deg,
+        rgba(26, 31, 58, 0.6) 0%,
+        rgba(42, 51, 78, 0.4) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--depth-shadow-2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-testid="metric-container"]:hover {
+    transform: var(--lift-transform);
+    box-shadow: 
+        var(--depth-shadow-3),
+        0 0 30px rgba(0, 212, 255, 0.1);
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+/* Step content cards with depth */
+.stTabs [data-testid="stTabsContent"] > div {
+    background: linear-gradient(180deg,
+        rgba(15, 20, 40, 0.5) 0%,
+        rgba(26, 31, 58, 0.3) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 1rem;
+    box-shadow: var(--depth-shadow-2);
+    border: 1px solid var(--glass-border);
 }
 
 /* Responsive Design */

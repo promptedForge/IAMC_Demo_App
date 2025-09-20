@@ -34,20 +34,68 @@ voice = st.sidebar.radio(
 )
 st.session_state.voice = voice
 
-# Mission Control Header with custom styling
+# Mission Control Header with modern glass morphism styling
 st.markdown(
-    """<h1 style='text-align: center; color: #00D4FF; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);'>
-    IAMC ADVOCACY INTELLIGENCE</h1>""", 
-    unsafe_allow_html=True
-)
-st.markdown(
-    """<p style='text-align: center; color: #B8B8C8; font-family: monospace; letter-spacing: 0.1em;'>
-    MISSION CONTROL • SIGNALS → DAILY RADAR → MASTER BRIEF → CONTENT DRAFTS</p>""", 
-    unsafe_allow_html=True
-)
-st.markdown(
-    """<p style='text-align: center; color: #B8B8C8; font-size: 0.9em;'>
-    Each step requires human approval before continuing.</p>""", 
+    """<div style='
+        background: linear-gradient(135deg, rgba(10, 14, 39, 0.7) 0%, rgba(17, 21, 48, 0.6) 100%);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 1rem 0 2rem 0;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+    '>
+        <div style='
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0, 212, 255, 0.1), 
+                transparent);
+            animation: glass-shine 8s infinite;
+        '></div>
+        <h1 style='
+            text-align: center; 
+            color: #00D4FF; 
+            text-shadow: 
+                0 0 40px rgba(0, 212, 255, 0.8),
+                0 0 80px rgba(0, 212, 255, 0.4);
+            font-weight: 200;
+            letter-spacing: 0.2em;
+            margin: 0;
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 1;
+        '>IAMC ADVOCACY INTELLIGENCE</h1>
+        <p style='
+            text-align: center; 
+            color: #B8B8C8; 
+            font-family: monospace; 
+            letter-spacing: 0.15em;
+            margin: 1rem 0 0.5rem 0;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        '>MISSION CONTROL • SIGNALS → DAILY RADAR → MASTER BRIEF → CONTENT DRAFTS</p>
+        <p style='
+            text-align: center; 
+            color: #B8B8C8; 
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        '>Each step requires human approval before continuing</p>
+    </div>""", 
     unsafe_allow_html=True
 )
 
@@ -81,7 +129,27 @@ def advance(to_step: int, payload_key: str | None = None, payload=None) -> None:
     
 # ----------------- Step 1: Collect Signals ----------------- #
 if st.session_state.step == 1:
-    st.header("Step 1 – Collect Signals (Radar Feed)")
+    st.markdown(
+        """<div style='
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.6) 0%, rgba(42, 51, 78, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        '>
+            <h2 style='
+                color: #00D4FF;
+                margin: 0;
+                font-weight: 400;
+                letter-spacing: 0.1em;
+                text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            '>Step 1 – Collect Signals (Radar Feed)</h2>
+        </div>""",
+        unsafe_allow_html=True
+    )
     with st.spinner("Analyzing radar feed..."):
         time.sleep(0.5)
         stories = get_demo_radar(st.session_state.voice)
@@ -106,7 +174,27 @@ if st.session_state.step == 1:
 
 # ----------------- Step 2: Daily Radar ----------------- #
 elif st.session_state.step == 2:
-    st.header("Step 2 – Daily Radar")
+    st.markdown(
+        """<div style='
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.6) 0%, rgba(42, 51, 78, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        '>
+            <h2 style='
+                color: #00D4FF;
+                margin: 0;
+                font-weight: 400;
+                letter-spacing: 0.1em;
+                text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            '>Step 2 – Daily Radar</h2>
+        </div>""",
+        unsafe_allow_html=True
+    )
     placeholder = st.empty()
     with st.spinner("Synthesizing daily radar..."):
         time.sleep(0.5)
@@ -130,7 +218,27 @@ elif st.session_state.step == 2:
 
 # ----------------- Step 3: Master Brief ----------------- #
 elif st.session_state.step == 3:
-    st.header("Step 3 – Master Brief")
+    st.markdown(
+        """<div style='
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.6) 0%, rgba(42, 51, 78, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        '>
+            <h2 style='
+                color: #00D4FF;
+                margin: 0;
+                font-weight: 400;
+                letter-spacing: 0.1em;
+                text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            '>Step 3 – Master Brief</h2>
+        </div>""",
+        unsafe_allow_html=True
+    )
     placeholder = st.empty()
     with st.spinner("Assembling master brief..."):
         time.sleep(0.5)
@@ -153,7 +261,27 @@ elif st.session_state.step == 3:
 
 # ----------------- Step 4: Content Drafts ----------------- #
 elif st.session_state.step == 4:
-    st.header("Step 4 – Content Drafts")
+    st.markdown(
+        """<div style='
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.6) 0%, rgba(42, 51, 78, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        '>
+            <h2 style='
+                color: #00D4FF;
+                margin: 0;
+                font-weight: 400;
+                letter-spacing: 0.1em;
+                text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            '>Step 4 – Content Drafts</h2>
+        </div>""",
+        unsafe_allow_html=True
+    )
     with st.spinner("Generating content drafts..."):
         time.sleep(0.5)
         drafts = generate_content(
@@ -171,16 +299,93 @@ elif st.session_state.step == 4:
             progress.progress(int((i + 1) / len(lines) * 100))
             time.sleep(0.05)
 
-    st.subheader("Press Release (Draft)")
+    # Create glass card containers for each draft section
+    st.markdown(
+        """<div style='
+            background: linear-gradient(135deg, rgba(15, 20, 40, 0.6) 0%, rgba(26, 31, 58, 0.4) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        ' 
+        onmouseover="this.style.transform='translateY(-4px) scale(1.01)'; this.style.boxShadow='0 8px 32px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 212, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05)';" 
+        onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)';">
+            <h3 style='color: #00D4FF; margin: 0 0 1rem 0; font-weight: 400;'>Press Release (Draft)</h3>
+        </div>""",
+        unsafe_allow_html=True
+    )
     gradual_text_area("Press Release", drafts["press_release"], height=250)
 
-    st.subheader("Social Media Posts (Drafts)")
+    st.markdown(
+        """<div style='
+            background: linear-gradient(135deg, rgba(15, 20, 40, 0.6) 0%, rgba(26, 31, 58, 0.4) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        ' 
+        onmouseover="this.style.transform='translateY(-4px) scale(1.01)'; this.style.boxShadow='0 8px 32px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 212, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05)';" 
+        onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)';">
+            <h3 style='color: #00D4FF; margin: 0 0 1rem 0; font-weight: 400;'>Social Media Posts (Drafts)</h3>
+        </div>""",
+        unsafe_allow_html=True
+    )
     gradual_text_area("Social Posts", drafts["social_posts"], height=200)
 
-    st.subheader("Newsletter Section (Draft)")
+    st.markdown(
+        """<div style='
+            background: linear-gradient(135deg, rgba(15, 20, 40, 0.6) 0%, rgba(26, 31, 58, 0.4) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        ' 
+        onmouseover="this.style.transform='translateY(-4px) scale(1.01)'; this.style.boxShadow='0 8px 32px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 212, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05)';" 
+        onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)';">
+            <h3 style='color: #00D4FF; margin: 0 0 1rem 0; font-weight: 400;'>Newsletter Section (Draft)</h3>
+        </div>""",
+        unsafe_allow_html=True
+    )
     gradual_text_area("Newsletter", drafts["newsletter"], height=300)
 
-    st.subheader("LinkedIn Op-ed (Draft)")
+    st.markdown(
+        """<div style='
+            background: linear-gradient(135deg, rgba(15, 20, 40, 0.6) 0%, rgba(26, 31, 58, 0.4) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        ' 
+        onmouseover="this.style.transform='translateY(-4px) scale(1.01)'; this.style.boxShadow='0 8px 32px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 212, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05)';" 
+        onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)';">
+            <h3 style='color: #00D4FF; margin: 0 0 1rem 0; font-weight: 400;'>LinkedIn Op-ed (Draft)</h3>
+        </div>""",
+        unsafe_allow_html=True
+    )
     gradual_text_area("LinkedIn Op-ed", drafts["linkedin_oped"], height=300)
 
     st.success("✅ Pipeline complete – All outputs loaded.")
