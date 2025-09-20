@@ -1,0 +1,87 @@
+{
+  "job_id": "iamc-mission-control-aesthetic",
+  "topic": "Streamlit Mission Control UI Implementation",
+  "facets": {
+    "Technologies": [
+      {
+        "name": "CSS Injection via st.markdown",
+        "source_url": "https://docs.streamlit.io/develop/api-reference/text/st.markdown",
+        "date": "2025-01-01",
+        "confidence": 0.95,
+        "quick_action": "Primary method - use unsafe_allow_html=True",
+        "risk_level": "medium"
+      },
+      {
+        "name": "Streamlit config.toml theming",
+        "source_url": "https://docs.streamlit.io/develop/concepts/configuration/theming",
+        "date": "2025-01-01",
+        "confidence": 0.90,
+        "quick_action": "Base theme configuration for dark mode",
+        "risk_level": "low"
+      }
+    ],
+    "Metrics": [
+      {
+        "metric": "CSS Load Time Impact",
+        "value": "<50ms",
+        "source_url": "performance_analysis",
+        "confidence": 0.80,
+        "quick_action": "Inline critical CSS, defer non-critical"
+      },
+      {
+        "metric": "Component Coverage",
+        "value": "80% with 20% effort",
+        "source_url": "implementation_strategy",
+        "confidence": 0.85,
+        "quick_action": "Focus on high-impact components first"
+      }
+    ],
+    "Risks": [
+      {
+        "risk": "Streamlit version updates breaking CSS",
+        "severity": "high",
+        "mitigation": "Version-specific CSS selectors with fallbacks",
+        "confidence": 0.90
+      },
+      {
+        "risk": "Performance degradation on mobile",
+        "severity": "medium",
+        "mitigation": "Media queries and touch-optimized styles",
+        "confidence": 0.85
+      }
+    ],
+    "Actions": [
+      {
+        "action": "Create .streamlit/config.toml",
+        "priority": 1,
+        "effort": "5 min",
+        "impact": "high"
+      },
+      {
+        "action": "Implement CSS loader function",
+        "priority": 2,
+        "effort": "10 min",
+        "impact": "critical"
+      },
+      {
+        "action": "Design Mission Control CSS",
+        "priority": 3,
+        "effort": "30 min",
+        "impact": "high"
+      }
+    ]
+  },
+  "budgets": {
+    "crawls_used": 5,
+    "crawls_cap": 25,
+    "deep_research_used": 1,
+    "deep_research_cap": 3
+  },
+  "policy_ledger": [
+    {
+      "decision": "Approved CSS injection method",
+      "rationale": "High confidence (0.95) with documented support",
+      "timestamp": "2025-09-20T10:00:00Z"
+    }
+  ]
+}

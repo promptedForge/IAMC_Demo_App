@@ -1,0 +1,224 @@
+/* IAMC Mission Control CSS Theme */
+/* Optimized for performance and maintainability */
+
+/* Global Variables */
+:root {
+    --primary-cyan: #00D4FF;
+    --secondary-cyan: #00A8CC;
+    --deep-navy: #0A0E27;
+    --mid-navy: #111530;
+    --light-navy: #1A1F3A;
+    --text-primary: #E8E8E8;
+    --text-secondary: #B8B8C8;
+    --success-green: #00FF88;
+    --warning-amber: #FFB800;
+    --error-red: #FF4444;
+    --border-subtle: rgba(0, 212, 255, 0.2);
+    --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+/* Main App Container */
+.stApp {
+    background: linear-gradient(180deg, var(--deep-navy) 0%, var(--mid-navy) 100%);
+    color: var(--text-primary);
+}
+
+/* Header Styling */
+.stApp > header {
+    background: rgba(10, 14, 39, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Title and Headers */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+    letter-spacing: 0.05em;
+}
+
+h1 {
+    text-transform: uppercase;
+    font-weight: 300;
+    text-shadow: var(--glow-cyan);
+}
+
+/* Sidebar Styling */
+section[data-testid="stSidebar"] {
+    background: var(--deep-navy);
+    border-right: 1px solid var(--border-subtle);
+}
+
+section[data-testid="stSidebar"] .stRadio label {
+    color: var(--text-secondary);
+    font-family: monospace;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.1em;
+}
+
+/* Button Styling */
+button[kind="primary"], button[kind="secondary"] {
+    background: linear-gradient(135deg, var(--primary-cyan), var(--secondary-cyan));
+    border: 1px solid var(--primary-cyan);
+    color: var(--deep-navy);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+button[kind="primary"]:hover, button[kind="secondary"]:hover {
+    background: var(--primary-cyan);
+    box-shadow: var(--glow-cyan);
+    transform: translateY(-2px);
+}
+
+button[kind="primary"]:disabled {
+    background: var(--light-navy);
+    border-color: var(--border-subtle);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Progress Bar */
+.stProgress > div > div {
+    background: linear-gradient(90deg, var(--secondary-cyan), var(--primary-cyan));
+    box-shadow: var(--glow-cyan);
+}
+
+/* Expander */
+.streamlit-expanderHeader {
+    background: var(--light-navy);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-family: monospace;
+    font-size: 0.95em;
+    border-radius: 4px;
+}
+
+.streamlit-expanderHeader:hover {
+    border-color: var(--primary-cyan);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+/* Container Styling */
+div[data-testid="stExpander"] > div {
+    background: rgba(26, 31, 58, 0.5);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 1rem;
+}
+
+/* Text Areas */
+.stTextArea textarea {
+    background: var(--light-navy);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-family: 'SF Mono', monospace;
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+
+.stTextArea textarea:focus {
+    border-color: var(--primary-cyan);
+    box-shadow: 0 0 0 1px var(--primary-cyan);
+    outline: none;
+}
+
+/* Markdown Content */
+.stMarkdown {
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+.stMarkdown strong {
+    color: var(--primary-cyan);
+    font-weight: 600;
+}
+
+.stMarkdown a {
+    color: var(--primary-cyan);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--primary-cyan);
+}
+
+.stMarkdown a:hover {
+    border-bottom-style: solid;
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+}
+
+/* Success Message */
+.stSuccess {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid var(--success-green);
+    color: var(--success-green);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+}
+
+/* Spinner */
+.stSpinner > div {
+    border-color: var(--primary-cyan) transparent transparent transparent;
+}
+
+/* Custom Animation for Mission Control Feel */
+@keyframes pulse-cyan {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 212, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 212, 255, 0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    button[kind="primary"], button[kind="secondary"] {
+        font-size: 0.85em;
+        padding: 0.5rem 1rem;
+    }
+    
+    .streamlit-expanderHeader {
+        font-size: 0.9em;
+    }
+}
+
+/* Touch-Optimized Styles */
+@media (pointer: coarse) {
+    button[kind="primary"], button[kind="secondary"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .streamlit-expanderHeader {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+/* Performance Optimizations */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

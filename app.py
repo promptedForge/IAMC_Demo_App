@@ -9,7 +9,23 @@ from data_pipeline import (
     get_demo_radar,
 )
 
-st.set_page_config(page_title="IAMC Advocacy Intelligence Demo", layout="centered")
+# CSS Loader Function
+def load_css(file_path):
+    """Load and inject custom CSS with Mission Control styling"""
+    with open(file_path) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+st.set_page_config(
+    page_title="IAMC Advocacy Intelligence Demo", 
+    layout="centered",
+    initial_sidebar_state="expanded"
+)
+
+# Load Mission Control CSS theme
+try:
+    load_css("assets/mission_control.css")
+except FileNotFoundError:
+    st.warning("Mission Control CSS not found. Using default theme.")
 
 voice = st.sidebar.radio(
     "Voice",
@@ -18,9 +34,22 @@ voice = st.sidebar.radio(
 )
 st.session_state.voice = voice
 
-st.title("IAMC Advocacy Intelligence Demo")
-st.write("Pipeline: Signals → Daily Radar → Master Brief → Content Drafts")
-st.write("Each step requires human approval before continuing.")
+# Mission Control Header with custom styling
+st.markdown(
+    """<h1 style='text-align: center; color: #00D4FF; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);'>
+    IAMC ADVOCACY INTELLIGENCE</h1>""", 
+    unsafe_allow_html=True
+)
+st.markdown(
+    """<p style='text-align: center; color: #B8B8C8; font-family: monospace; letter-spacing: 0.1em;'>
+    MISSION CONTROL • SIGNALS → DAILY RADAR → MASTER BRIEF → CONTENT DRAFTS</p>""", 
+    unsafe_allow_html=True
+)
+st.markdown(
+    """<p style='text-align: center; color: #B8B8C8; font-size: 0.9em;'>
+    Each step requires human approval before continuing.</p>""", 
+    unsafe_allow_html=True
+)
 
 # Session state to track progress and processing flag
 if "step" not in st.session_state:

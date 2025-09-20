@@ -1,0 +1,18 @@
+[theme]
+# Base theme configuration
+base = "dark"
+
+# Primary color for interactive elements (tactical cyan)
+primaryColor = "#00D4FF"
+
+# Background colors (deep navy)
+backgroundColor = "#0A0E27"
+secondaryBackgroundColor = "#111530"
+
+# Text colors
+textColor = "#E8E8E8"
+font = "monospace"
+
+# Chart colors for Mission Control aesthetic
+[theme.chartColors]
+seriesColors = ["#00D4FF", "#FF6B6B", "#4ECDC4", "#FFE66D", "#A8E6CF", "#C7CEEA", "#FF8CC8", "#B4E7CE"]
